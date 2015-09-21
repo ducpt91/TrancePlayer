@@ -5,14 +5,35 @@
     android:background="@color/teal_100"
     tools:context=".MainActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/txtSongDuration"
+        android:layout_margin="@dimen/activity_vertical_margin"
+        android:background="@color/teal_200">
+
+        <TextView
+            android:id="@+id/txtSongTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_10dp"
+            android:ellipsize="marquee"
+            android:gravity="center"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:singleLine="true"
+            android:textColor="@color/teal_800"
+            android:textSize="@dimen/_20sp" />
+    </LinearLayout>
+
     <TextView
+        android:id="@+id/txtSongDuration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/sbPlayback"
         android:layout_centerHorizontal="true"
+        android:text="0:00 - 7:35"
         android:textColor="@color/teal_900"
-        android:textStyle="bold"
-        android:text="0:00 - 7:35" />
+        android:textStyle="bold" />
 
     <SeekBar
         android:id="@+id/sbPlayback"
