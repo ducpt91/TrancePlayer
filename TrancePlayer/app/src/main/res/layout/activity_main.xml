@@ -71,11 +71,23 @@
     </RelativeLayout>
 
     <TextView
+        android:id="@+id/txtCurrentDuration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/sbPlayback"
+        android:layout_marginLeft="@dimen/activity_vertical_margin"
+        android:text="0:00"
+        android:textColor="@color/teal_900"
+        android:textStyle="bold" />
+
+    <TextView
         android:id="@+id/txtSongDuration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/sbPlayback"
-        android:layout_centerHorizontal="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/activity_vertical_margin"
+        android:text="0:00"
         android:textColor="@color/teal_900"
         android:textStyle="bold" />
 
@@ -88,7 +100,7 @@
         android:layout_marginBottom="@dimen/activity_vertical_margin"
         android:layout_marginLeft="@dimen/activity_vertical_margin"
         android:layout_marginRight="@dimen/activity_vertical_margin"
-        android:layout_marginTop="@dimen/_10dp"
+        android:layout_marginTop="@dimen/_5dp"
         android:progressDrawable="@drawable/bg_seekbar_progress"
         android:thumb="@drawable/img_seekbar_thumb" />
 
