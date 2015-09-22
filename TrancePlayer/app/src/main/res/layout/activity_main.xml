@@ -5,7 +5,7 @@
     android:background="@color/teal_100"
     tools:context=".MainActivity">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/txtSongDuration"
@@ -23,7 +23,52 @@
             android:singleLine="true"
             android:textColor="@color/teal_800"
             android:textSize="@dimen/_20sp" />
-    </LinearLayout>
+
+        <TextView
+            android:id="@+id/txtCurrentPlayingTrack"
+            android:layout_width="@dimen/_100dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:ellipsize="marquee"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:singleLine="true"
+            android:textColor="@color/teal_600"
+            android:textStyle="italic" />
+
+        <ImageView
+            android:id="@+id/ivPlayerDisc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/img_player_disc" />
+
+
+        <ImageView
+            android:id="@+id/ivShuffle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="@dimen/_5dp"
+            android:src="@drawable/ic_shuffle_white_36dp" />
+
+        <ImageView
+            android:id="@+id/ivMusicLibrary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/_5dp"
+            android:src="@drawable/ic_library_music_white_36dp" />
+
+        <ImageView
+            android:id="@+id/ivRepeat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_margin="@dimen/_5dp"
+            android:src="@drawable/ic_repeat_white_36dp" />
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/txtSongDuration"
@@ -31,7 +76,6 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/sbPlayback"
         android:layout_centerHorizontal="true"
-        android:text="0:00 - 7:35"
         android:textColor="@color/teal_900"
         android:textStyle="bold" />
 
