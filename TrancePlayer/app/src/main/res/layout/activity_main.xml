@@ -122,11 +122,23 @@
                 android:layout_marginRight="@dimen/activity_vertical_margin"
                 android:src="@drawable/btn_fast_rewind" />
 
-            <ImageView
-                android:id="@+id/ivPlay"
+            <FrameLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/btn_play" />
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/ivPlay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/btn_play" />
+
+                <ImageView
+                    android:id="@+id/ivPause"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/btn_pause"
+                    android:visibility="gone" />
+            </FrameLayout>
 
             <ImageView
                 android:id="@+id/ivFastForward"
