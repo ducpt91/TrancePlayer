@@ -20,6 +20,7 @@ import trancemusiccollections.tranceplayer.R;
 public class SongAdapter extends BaseAdapter {
     private Context context;
     private ArrayList<Song> listSongs;
+    private int position;
 
     public SongAdapter(Context context, ArrayList<Song> listSongs) {
         this.context = context;
@@ -56,6 +57,7 @@ public class SongAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) view.getTag();
         }
+        this.position = position;
         Song item = listSongs.get(position);
         if (item.isPlaying()) {
             Animation anim = AnimationUtils.loadAnimation(context, R.anim.player_disc_rotation);
@@ -65,6 +67,14 @@ public class SongAdapter extends BaseAdapter {
         }
         holder.txtTitle.setText(item.getTitle());
         return view;
+    }
+
+    public Song getSong(int position) {
+        return listSongs.get(position);
+    }
+
+    public int getPosition() {
+        return position;
     }
 
     private class ViewHolder {

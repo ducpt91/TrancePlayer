@@ -6,6 +6,7 @@ package utils;
 public class Utils {
     public static String milliSecondsToTimer(long milliseconds) {
         String finalTimerString = "";
+        String minutesString = "";
         String secondsString = "";
 
         // Convert total duration into time
@@ -17,6 +18,11 @@ public class Utils {
             finalTimerString = hours + ":";
         }
 
+        if (minutes < 10) {
+            minutesString = "0" + minutes;
+        } else {
+            minutesString = "" + minutes;
+        }
         // Prepending 0 to seconds if it is one digit
         if (seconds < 10) {
             secondsString = "0" + seconds;
@@ -24,7 +30,7 @@ public class Utils {
             secondsString = "" + seconds;
         }
 
-        finalTimerString = finalTimerString + minutes + ":" + secondsString;
+        finalTimerString = finalTimerString + minutesString + ":" + secondsString;
 
         // return timer string
         return finalTimerString;

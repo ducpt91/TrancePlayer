@@ -58,7 +58,7 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="@dimen/_5dp"
-            android:src="@drawable/ic_library_music_white_36dp" />
+            android:src="@drawable/btn_library_music" />
 
         <ImageView
             android:id="@+id/ivRepeat"

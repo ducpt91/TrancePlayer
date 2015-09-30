@@ -9,6 +9,7 @@ public class Song {
     private int id;
     private String url;
     private String title;
+    private int duration;
     private boolean isPlaying;
     private ArrayList<Track> listTracks;
 
@@ -34,6 +35,14 @@ public class Song {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
     }
 
     public boolean isPlaying() {
