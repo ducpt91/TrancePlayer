@@ -1,0 +1,6 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <corners android:radius="@dimen/_30dp"></corners>
+    <solid android:color="@color/teal_900_transparent"></solid>
+</shape><!-- From: file:/home/enclaveit/Android/TrancePlayer/app/src/main/res/drawable/bg_control_button_layout.xml -->

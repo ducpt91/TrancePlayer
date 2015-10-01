@@ -1,0 +1,6 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/ic_fast_rewind_black_36dp" android:state_focused="true" android:state_pressed="true" />
+    <item android:drawable="@drawable/ic_fast_rewind_black_36dp" android:state_focused="false" android:state_pressed="true" />
+    <item android:drawable="@drawable/ic_fast_rewind_black_36dp" android:state_focused="true" />
+    <item android:drawable="@drawable/ic_fast_rewind_white_36dp" android:state_focused="false" android:state_pressed="false" />
+</selector><!-- From: file:/home/enclaveit/Android/TrancePlayer/app/src/main/res/drawable/btn_fast_rewind.xml -->

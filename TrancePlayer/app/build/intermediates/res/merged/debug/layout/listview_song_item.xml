@@ -1,0 +1,27 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/teal_100"
+    android:padding="@dimen/_10dp">
+
+    <ImageView
+        android:id="@+id/ivStatus"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_centerVertical="true"
+        android:src="@drawable/img_player_disc" />
+
+    <TextView
+        android:id="@+id/txtTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_margin="@dimen/_5dp"
+        android:layout_toRightOf="@+id/ivStatus"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:text="Armin van Buuren - A State of Trance 731 [17-Sep-2015]"
+        android:textColor="@color/teal_800" />
+
+</RelativeLayout><!-- From: file:/home/enclaveit/Android/TrancePlayer/app/src/main/res/layout/listview_song_item.xml -->

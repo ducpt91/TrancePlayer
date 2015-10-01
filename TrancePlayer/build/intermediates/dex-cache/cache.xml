@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="/home/enclaveit/Android/TrancePlayer/app/build/intermediates/exploded-aar/TrancePlayer/volley/unspecified/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="0747c2d87aa1e892b44e66b9080c4ed13371f2d1">
+        <dex dex="/home/enclaveit/Android/TrancePlayer/app/build/intermediates/pre-dexed/debug/classes-9159a3dfdc5baebaa2b527a9d6be2d4cf7e5ab4b.jar" />
+    </item>
+
+</items>
