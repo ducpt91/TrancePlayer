@@ -73,8 +73,8 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnCom
             int progress = (Utils.getProgressPercentage(currentDuration, currentSong.getDuration()));
             sbPlayback.setProgress(progress);
 
-            // Running this thread after 100 milliseconds
-            mHandler.postDelayed(this, 100);
+            // Running this thread after 200 milliseconds
+            mHandler.postDelayed(this, 200);
         }
     };
     private boolean isSuffle;
@@ -118,8 +118,6 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnCom
      * Initial views' attributes.
      */
     private void initialViewAttributes() {
-        txtSongTitle.setSelected(true);
-        txtCurrentPlayingTrack.setSelected(true);
         sbPlayback.setOnSeekBarChangeListener(this);
     }
 
@@ -405,7 +403,7 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnCom
             mAnimation.resume();
             ivPlay.setVisibility(View.GONE);
             ivPause.setVisibility(View.VISIBLE);
-            mHandler.postDelayed(mUpdateTimeTask, 100);
+            mHandler.postDelayed(mUpdateTimeTask, 200);
         } else {
             mAnimation.pause();
             ivPlay.setVisibility(View.VISIBLE);
