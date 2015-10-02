@@ -73,10 +73,6 @@ public class SongAdapter extends BaseAdapter {
         return listSongs.get(position);
     }
 
-    public int getPosition() {
-        return position;
-    }
-
     private class ViewHolder {
         private ImageView ivStatus;
         private TextView txtTitle;

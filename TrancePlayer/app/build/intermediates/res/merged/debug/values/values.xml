@@ -1280,6 +1280,17 @@
         <item name="android:dropDownItemStyle">@style/Widget.AppCompat.DropDownItem.Spinner</item>
     </style>
     <style name="Platform.Widget.AppCompat.Spinner" parent="android:Widget.Spinner"/>
+    <!-- From: file:/home/enclaveit/Android/TrancePlayer/app/src/main/res/values/styles.xml -->
+    <eat-comment/>
+    <style name="ProgressBarCustomStyle" parent="@android:style/Widget.SeekBar">
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:progressDrawable">@drawable/bg_seekbar_progress</item>
+        <item name="android:indeterminateDrawable">@drawable/bg_seekbar_progress</item>
+        <item name="android:minHeight">@dimen/_5dp</item>
+        <item name="android:maxHeight">@dimen/_5dp</item>
+    </style>
+    <!-- From: file:/home/enclaveit/Android/TrancePlayer/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values/values.xml -->
+    <eat-comment/>
     <style name="RtlOverlay.DialogWindowTitle.AppCompat" parent="Base.DialogWindowTitle.AppCompat">
     </style>
     <style name="RtlOverlay.Widget.AppCompat.ActionBar.TitleItem" parent="android:Widget">

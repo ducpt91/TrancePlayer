@@ -8,7 +8,6 @@ public class Constants {
     public static final String KEY_ID = "id";
     public static final String KEY_URL = "url";
     public static final String KEY_TITLE = "title";
-    public static final String KEY_DURATION = "duration";
     public static final String KEY_TRACK = "track";
     public static final String KEY_TIME = "time";
     public static final String KEY_NAME = "name";

@@ -87,6 +87,7 @@
 
         <SeekBar
             android:id="@+id/sbPlayback"
+            style="@style/ProgressBarCustomStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/llControl"
@@ -95,7 +96,6 @@
             android:layout_marginLeft="@dimen/activity_vertical_margin"
             android:layout_marginRight="@dimen/activity_vertical_margin"
             android:layout_marginTop="@dimen/_5dp"
-            android:progressDrawable="@drawable/bg_seekbar_progress"
             android:thumb="@drawable/img_seekbar_thumb" />
 
         <LinearLayout

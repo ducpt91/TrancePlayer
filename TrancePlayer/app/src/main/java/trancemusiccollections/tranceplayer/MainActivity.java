@@ -6,6 +6,7 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.animation.Animation;
@@ -37,7 +38,7 @@ import utils.Constants;
 import utils.PausableAnimation;
 import utils.Utils;
 
-public class MainActivity extends AppCompatActivity implements MediaPlayer.OnCompletionListener, SeekBar.OnSeekBarChangeListener {
+public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener {
 
     private final int SEEK_TIME = 10000;
     private ListView lvSongs;
@@ -70,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnCom
             txtCurrentDuration.setText(Utils.milliSecondsToTimer(currentDuration));
 
             // Updating progress bar
-            int progress = (Utils.getProgressPercentage(currentDuration, currentSong.getDuration()));
+            int progress = (Utils.getProgressPercentage(currentDuration, mMediaPlayer.getDuration()));
             sbPlayback.setProgress(progress);
 
             // Running this thread after 200 milliseconds
@@ -139,8 +140,59 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnCom
      */
     private void initialMediaPlayer() {
         mMediaPlayer = new MediaPlayer();
-        mMediaPlayer.setOnCompletionListener(this);
         mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+                SongAdapter adapter = (SongAdapter) lvSongs.getAdapter();
+                int size = adapter.getCount();
+                if (currentSong != null) {
+                    currentSong.setPlaying(false);
+                }
+                if (!isRepeat && !isSuffle) {
+                    if (position < (size - 1)) {
+                        position++;
+                    } else {
+                        position = 0;
+                    }
+                } else if (isSuffle) {
+                    Random rand = new Random();
+                    position = rand.nextInt((size - 1) + 1);
+                }
+                currentSong = adapter.getSong(position);
+                currentSong.setPlaying(true);
+                adapter.notifyDataSetChanged();
+                playMedia();
+            }
+        });
+        mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mediaPlayer) {
+                Log.d("Dash", "Duration: " + mMediaPlayer.getDuration());
+                mMediaPlayer.start();
+                txtSongTitle.setText(currentSong.getTitle());
+                txtSongDuration.setText(Utils.milliSecondsToTimer(mMediaPlayer.getDuration()));
+                mAnimation.resume();
+                ivPlay.setVisibility(View.GONE);
+                ivPause.setVisibility(View.VISIBLE);
+                mHandler.postDelayed(mUpdateTimeTask, 200);
+            }
+        });
+        mMediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+            @Override
+            public boolean onError(MediaPlayer mediaPlayer, int i, int i1) {
+                mAnimation.pause();
+                ivPlay.setVisibility(View.VISIBLE);
+                ivPause.setVisibility(View.GONE);
+                return false;
+            }
+        });
+        mMediaPlayer.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
+            @Override
+            public void onBufferingUpdate(MediaPlayer mediaPlayer, int progress) {
+                sbPlayback.setSecondaryProgress(progress);
+            }
+        });
     }
 
     /**
@@ -259,10 +311,10 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnCom
             @Override
             public void onClick(View view) {
                 int currentPosition = mMediaPlayer.getCurrentPosition();
-                if (currentPosition + SEEK_TIME < currentSong.getDuration()) {
+                if (currentPosition + SEEK_TIME < mMediaPlayer.getDuration()) {
                     mMediaPlayer.seekTo(currentPosition + SEEK_TIME);
                 } else {
-                    mMediaPlayer.seekTo(currentSong.getDuration());
+                    mMediaPlayer.seekTo(mMediaPlayer.getDuration());
                 }
             }
         });
@@ -307,7 +359,6 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnCom
                             song.setId(songObject.getInt(Constants.KEY_ID));
                             song.setUrl(songObject.getString(Constants.KEY_URL));
                             song.setTitle(songObject.getString(Constants.KEY_TITLE));
-                            song.setDuration(songObject.getInt(Constants.KEY_DURATION));
                             trackArray = songObject.getJSONArray(Constants.KEY_TRACK);
                             listTrack = new ArrayList<>();
                             for (int j = 0; j < trackArray.length(); j++) {
@@ -341,29 +392,6 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnCom
     }
 
     @Override
-    public void onCompletion(MediaPlayer mediaPlayer) {
-        SongAdapter adapter = (SongAdapter) lvSongs.getAdapter();
-        int size = adapter.getCount();
-        if (currentSong != null) {
-            currentSong.setPlaying(false);
-        }
-        if (!isRepeat && !isSuffle) {
-            if (position < (size - 1)) {
-                position++;
-            } else {
-                position = 0;
-            }
-        } else if (isSuffle) {
-            Random rand = new Random();
-            position = rand.nextInt((size - 1) + 1);
-        }
-        currentSong = adapter.getSong(position);
-        currentSong.setPlaying(true);
-        adapter.notifyDataSetChanged();
-        playMedia();
-    }
-
-    @Override
     public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
 
     }
@@ -376,7 +404,7 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnCom
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
         mHandler.removeCallbacks(mUpdateTimeTask);
-        int totalDuration = currentSong.getDuration();
+        int totalDuration = mMediaPlayer.getDuration();
         int currentPosition = Utils.progressToTimer(seekBar.getProgress(), totalDuration);
 
         // forward or backward to certain seconds
@@ -391,29 +419,31 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnCom
         mMediaPlayer.reset();
         try {
             mMediaPlayer.setDataSource(currentSong.getUrl());
-            mMediaPlayer.prepare();
-            mMediaPlayer.start();
+            mMediaPlayer.prepareAsync();
+//            mMediaPlayer.start();
             result = true;
         } catch (IOException e) {
             e.printStackTrace();
         }
-        if (result) {
-            txtSongTitle.setText(currentSong.getTitle());
-            txtSongDuration.setText(Utils.milliSecondsToTimer(currentSong.getDuration()));
-            mAnimation.resume();
-            ivPlay.setVisibility(View.GONE);
-            ivPause.setVisibility(View.VISIBLE);
-            mHandler.postDelayed(mUpdateTimeTask, 200);
-        } else {
-            mAnimation.pause();
-            ivPlay.setVisibility(View.VISIBLE);
-            ivPause.setVisibility(View.GONE);
-        }
+//        if (result) {
+//            Log.d("Dash", "Duration: " + mMediaPlayer.getDuration());
+//            txtSongTitle.setText(currentSong.getTitle());
+//            txtSongDuration.setText(Utils.milliSecondsToTimer(mMediaPlayer.getDuration()));
+//            mAnimation.resume();
+//            ivPlay.setVisibility(View.GONE);
+//            ivPause.setVisibility(View.VISIBLE);
+//            mHandler.postDelayed(mUpdateTimeTask, 200);
+//        } else {
+//            mAnimation.pause();
+//            ivPlay.setVisibility(View.VISIBLE);
+//            ivPause.setVisibility(View.GONE);
+//        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mHandler.removeCallbacks(mUpdateTimeTask);
         mMediaPlayer.release();
     }
 }
