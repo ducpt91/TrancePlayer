@@ -6,7 +6,6 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.animation.Animation;
@@ -54,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBar
     private ImageView ivSkipPrevious;
     private ImageView ivFastRewind;
     private ImageView ivPlay;
+    private ImageView ivBuffering;
     private ImageView ivPause;
     private ImageView ivFastForward;
     private ImageView ivSkipNext;
@@ -110,6 +110,7 @@ public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBar
         ivSkipPrevious = (ImageView) findViewById(R.id.ivSkipPrevious);
         ivFastRewind = (ImageView) findViewById(R.id.ivFastRewind);
         ivPlay = (ImageView) findViewById(R.id.ivPlay);
+        ivBuffering = (ImageView) findViewById(R.id.ivBuffering);
         ivPause = (ImageView) findViewById(R.id.ivPause);
         ivFastForward = (ImageView) findViewById(R.id.ivFastForward);
         ivSkipNext = (ImageView) findViewById(R.id.ivSkipNext);
@@ -120,6 +121,7 @@ public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBar
      */
     private void initialViewAttributes() {
         sbPlayback.setOnSeekBarChangeListener(this);
+        ivBuffering.setImageResource(R.drawable.buffering_animation);
     }
 
     /**
@@ -168,11 +170,11 @@ public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBar
         mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mediaPlayer) {
-                Log.d("Dash", "Duration: " + mMediaPlayer.getDuration());
                 mMediaPlayer.start();
                 txtSongTitle.setText(currentSong.getTitle());
                 txtSongDuration.setText(Utils.milliSecondsToTimer(mMediaPlayer.getDuration()));
                 mAnimation.resume();
+                ivBuffering.setVisibility(View.GONE);
                 ivPlay.setVisibility(View.GONE);
                 ivPause.setVisibility(View.VISIBLE);
                 mHandler.postDelayed(mUpdateTimeTask, 200);
@@ -182,6 +184,7 @@ public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBar
             @Override
             public boolean onError(MediaPlayer mediaPlayer, int i, int i1) {
                 mAnimation.pause();
+                ivBuffering.setVisibility(View.GONE);
                 ivPlay.setVisibility(View.VISIBLE);
                 ivPause.setVisibility(View.GONE);
                 return false;
@@ -194,6 +197,7 @@ public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBar
             }
         });
     }
+
 
     /**
      * Set events for views.
@@ -281,11 +285,13 @@ public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBar
         ivFastRewind.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int currentPosition = mMediaPlayer.getCurrentPosition();
-                if (currentPosition - SEEK_TIME > 0) {
-                    mMediaPlayer.seekTo(currentPosition - SEEK_TIME);
-                } else {
-                    mMediaPlayer.seekTo(0);
+                if (ivBuffering.getVisibility() == View.GONE) {
+                    int currentPosition = mMediaPlayer.getCurrentPosition();
+                    if (currentPosition - SEEK_TIME > 0) {
+                        mMediaPlayer.seekTo(currentPosition - SEEK_TIME);
+                    } else {
+                        mMediaPlayer.seekTo(0);
+                    }
                 }
             }
         });
@@ -310,11 +316,13 @@ public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBar
         ivFastForward.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int currentPosition = mMediaPlayer.getCurrentPosition();
-                if (currentPosition + SEEK_TIME < mMediaPlayer.getDuration()) {
-                    mMediaPlayer.seekTo(currentPosition + SEEK_TIME);
-                } else {
-                    mMediaPlayer.seekTo(mMediaPlayer.getDuration());
+                if (ivBuffering.getVisibility() == View.GONE) {
+                    int currentPosition = mMediaPlayer.getCurrentPosition();
+                    if (currentPosition + SEEK_TIME < mMediaPlayer.getDuration()) {
+                        mMediaPlayer.seekTo(currentPosition + SEEK_TIME);
+                    } else {
+                        mMediaPlayer.seekTo(mMediaPlayer.getDuration());
+                    }
                 }
             }
         });
@@ -411,33 +419,19 @@ public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBar
         mMediaPlayer.seekTo(currentPosition);
 
         // update timer progress again
-        mHandler.postDelayed(mUpdateTimeTask, 100);
+        mHandler.postDelayed(mUpdateTimeTask, 200);
     }
 
     private void playMedia() {
-        boolean result = false;
+        ivPlay.setVisibility(View.GONE);
+        ivBuffering.setVisibility(View.VISIBLE);
         mMediaPlayer.reset();
         try {
             mMediaPlayer.setDataSource(currentSong.getUrl());
             mMediaPlayer.prepareAsync();
-//            mMediaPlayer.start();
-            result = true;
         } catch (IOException e) {
             e.printStackTrace();
         }
-//        if (result) {
-//            Log.d("Dash", "Duration: " + mMediaPlayer.getDuration());
-//            txtSongTitle.setText(currentSong.getTitle());
-//            txtSongDuration.setText(Utils.milliSecondsToTimer(mMediaPlayer.getDuration()));
-//            mAnimation.resume();
-//            ivPlay.setVisibility(View.GONE);
-//            ivPause.setVisibility(View.VISIBLE);
-//            mHandler.postDelayed(mUpdateTimeTask, 200);
-//        } else {
-//            mAnimation.pause();
-//            ivPlay.setVisibility(View.VISIBLE);
-//            ivPause.setVisibility(View.GONE);
-//        }
     }
 
     @Override

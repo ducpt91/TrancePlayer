@@ -139,6 +139,13 @@
                         android:src="@drawable/btn_play" />
 
                     <ImageView
+                        android:id="@+id/ivBuffering"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_buffering_1_48dp"
+                        android:visibility="gone" />
+
+                    <ImageView
                         android:id="@+id/ivPause"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
